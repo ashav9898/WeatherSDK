@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Android;
 using UnityEngine.Networking;
 
 public class Weather : MonoBehaviour
@@ -18,6 +19,17 @@ public class Weather : MonoBehaviour
 
     IEnumerator getLocation()
     {
+        // ---------- ANDROID ----------
+#if UNITY_ANDROID
+        if (!Permission.HasUserAuthorizedPermission(Permission.FineLocation))
+        {
+            Permission.RequestUserPermission(Permission.FineLocation);
+
+            // Wait until user responds
+            while (!Permission.HasUserAuthorizedPermission(Permission.FineLocation))
+                yield return null;
+        }
+#endif
         // Check if user has location service enabled
         if (!Input.location.isEnabledByUser)
         {
@@ -83,7 +95,7 @@ public class Weather : MonoBehaviour
             System.Array.Sort(TodayTemp);
             float MinTemp = TodayTemp[0];
             float MaxTemp = TodayTemp[TodayTemp.Length - 1];
-            ToastShow.ShowToastMsg("Min Temperature: " + MinTemp + "°C"+ " and Max Temperature: "+ MaxTemp + " at you location");
+            ToastShow.ShowToastMsg("Min Temperature: " + MinTemp + "°C"+ " and Max Temperature: "+ MaxTemp + " at your location");
         }
         else
         {
