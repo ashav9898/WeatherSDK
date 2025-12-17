@@ -2,15 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ToastShow : MonoBehaviour
+public static class ToastShow
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    public void ShowToastMsg(string message)
+    public static void ShowToastMsg(string message)
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
         AndroidToast.Show(message);
